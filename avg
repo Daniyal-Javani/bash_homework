@@ -1,0 +1,18 @@
+#!/bin/bash
+re='^-[0-9]+$'
+re2='^[0-9]+$'
+echo "Please enter average num"
+read a
+if ! [[ $a =~ $re2 ]] && ! [[ $a =~ $re ]] ; then
+   echo "error: Not a number" >&2;
+elif [[ $a -gt 20 ]] || [[ $a -lt 0 ]]; then
+	echo "Not in range"
+elif [[ $a -ge 17 ]] && [[ $a -le 20 ]]; then
+	echo "A"
+elif [[ $a -ge 14 ]] ; then
+	echo "B"
+elif [[ $a -ge 12 ]]; then
+	echo "C"
+elif [[ $a -ge 0 ]]; then
+	echo "D"
+fi

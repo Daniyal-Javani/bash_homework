@@ -1,0 +1,14 @@
+#!/bin/bash
+len=$#
+args=("$@")
+if [[ $len -ge 2 ]] && [[ $len -le 10 ]] ; then
+	echo "Sorry, I can't accept it"
+else
+	for (( i=0; i<$len; i++ ))
+	do
+		m=$(( $i % 2 ))
+		if [[ $m -eq 0 ]]; then
+			echo ${args[${i}]}
+		fi
+	done
+fi

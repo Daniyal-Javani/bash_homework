@@ -1,0 +1,9 @@
+#!/bin/bash
+for (( i = $1; i <= $2; i++ )); do
+	k=$((i%2))
+	if [[ $k -eq 1 ]]; then
+		sed -n $i"p" $3
+		# echo $i
+	fi
+done
+echo

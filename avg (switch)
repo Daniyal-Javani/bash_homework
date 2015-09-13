@@ -1,0 +1,44 @@
+#!/bin/bash
+re='^-[0-9]+$'
+re2='^[0-9]+$'
+echo "Please enter average num"
+read a
+if ! [[ $a =~ $re2 ]] && ! [[ $a =~ $re ]] ; then
+   echo "error: Not a number" >&2
+fi
+
+case "$a" in
+1[789])  
+    echo "A"
+    ;;
+20)  
+    echo "A"
+    ;;
+1[654])  
+	echo  "B"
+    ;;
+1[23]) 
+    echo  "C"
+    ;;
+1[01]) 
+   echo "D"
+   ;;
+[123456789])
+   echo "D"
+   ;;
+*) echo "Not in range!"
+   ;;
+esac
+
+
+# if ! [[ $a =~ $re2 ]] && ! [[ $a =~ $re ]] ; then
+#    echo "error: Not a number" >&2; exit 1
+# elif [[ $a -ge 17 ]] && [[ $a -le 20 ]]; then
+# 	echo "A"
+# elif [[ $a -ge 14 ]] ; then
+# 	echo "B"
+# elif [[ $a -ge 12 ]]; then
+# 	echo "C"
+# elif [[ $a -ge 0 ]]; then
+# 	echo "D"
+# fi

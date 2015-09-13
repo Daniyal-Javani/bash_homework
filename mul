@@ -1,0 +1,10 @@
+#!/bin/bash
+echo "Enter your number"
+read a
+echo -e "multiplexer is"
+i=0
+while (( i<=10 ));
+do
+	echo $(($i*$a))
+	let i++
+done

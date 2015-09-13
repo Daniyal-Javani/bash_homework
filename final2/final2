@@ -1,0 +1,26 @@
+#!/bin/bash
+j=0
+args=()
+for i in "$@"; do
+    args+=("$i")
+    # j=$(($j+1))
+done
+
+for (( i = 0; i < $#; i++ )); do
+	j=$i
+	while [[ $j -gt 0 ]] && [[ ${args[$(( $j-1 ))]} -gt ${args[$(( $j ))]} ]]; do
+		# echo ${args[$(( $j ))]}  ${args[$(( $j-1 ))]}
+ 		temp=${args[$(( $j ))]}
+ 		# echo $temp
+		args[$(( $j ))]=${args[$(( $j-1 ))]}
+		# echo ${args[$(( $j ))]}
+		j=$(($j-1))
+		args[$(( $j ))]=$temp
+		# echo ${args[$(( $j ))]}
+
+	done
+done
+
+for (( i = 0; i < $#; i++ )); do
+	echo ${args[$(( $i ))]}
+done

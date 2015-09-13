@@ -1,0 +1,9 @@
+final1                          User Commands                         final1
+
+NAME
+       final1 - Get line n to m
+SYNOPSIS
+       final2 n m file-address
+
+DESCRIPTION
+		Just a silly package!

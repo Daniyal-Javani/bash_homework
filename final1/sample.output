@@ -1,0 +1,9 @@
+sample:
+./final1 2 5  ~/ex.bash/avg
+
+
+output:
+re='^-[0-9]+$'
+re2='^[0-9]+$'
+echo "Please enter average num"
+read a

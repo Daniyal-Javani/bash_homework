@@ -1,0 +1,117 @@
+#!/bin/bash
+#Change username and password
+arr[0]=222f96af-2efc-45e7-8f6f-8845e0a00872 #2
+arr[1]=5a10608f-7ce7-482a-a255-53d52f44bc7a #3
+arr[2]=018f1a10-a958-464f-a321-b3441506635d #4
+arr[3]=f27a8fec-54fb-4e3a-bfb7-c916f0af99b3 #5
+arr[4]=3c2e3e6b-92d2-422f-8072-a5345515eec2 #6
+arr[5]=b0c3335f-589b-426a-bb2d-86d793489674 #7
+arr[6]=72e5b108-edf3-45e2-971a-3711b0aacd97 #8
+arr[7]=4f230263-ee45-4b09-be9f-de7412e148e9 #9
+arr[8]=694c2a41-c151-4d1e-a488-a4e5acef3f67 #10
+arr[9]=cd74b0b2-585e-493e-b5bb-1f69081f6c91 #11
+arr[10]=ed6374dc-32ee-4f89-956c-2d072beec161 #12
+arr[11]=1f6df3b5-f303-4312-badc-f98a02b08003 #13
+arr[12]=ee97e91b-56e4-4520-b9a8-9936da4853e9 #14
+arr[13]=3482c9df-c73c-4f6c-af92-1f6b4487d581 #15
+arr[14]=b3a54770-14a7-436b-8377-6fe69ab6fb14 #16
+arr[15]=ab4873e1-1519-4f4a-a728-4cfbb2efde2c #17
+arr[16]=18401e4b-316c-48df-b91f-991f16c9c423 #18
+arr[17]=0931fb50-3261-495d-81c9-f61818b35de3 #19
+arr[18]=c30d494e-5ad5-4c88-909c-dd5f177f485c #20
+arr[19]=542fdef5-cc38-4c4a-86bb-7003b8793179 #21
+arr[20]=7bbe510b-5502-45e3-8371-864b826d38b5 #22
+arr[21]=900c4c6f-2591-47dc-8182-83c178ad0c0c1 #23   deactive because for anjoman
+arr[22]=48184619-657c-4e51-8aec-dd8fa8f95854 #24
+arr[23]=30ab7a13-a7ba-41c6-b756-3335c1a91932 #25
+arr[24]=7ba3ab54-af3a-4a86-91aa-397441783317 #26
+arr[25]=ee48f8b4-f195-45ea-9fd6-41ba26b1104c #27
+arr[26]=0f71ed69-63e5-43f3-80d2-ca86d77272bf #28
+
+len=${#arr[@]}
+dis=0
+wifi=0
+is_connect=0
+while [ "true" ]
+do
+	echo "Start a round" >> vpn.log
+	echo "Trying to connecting to 2..."
+    nmcli con up uuid ${arr[0]}  > sample.s 2> sample.err
+    if [[ $? == 0 ]] ; then
+    	is_connect=1
+		echo "VPN connection 2 has been successfully established."
+		echo "VPN connection 2 has been successfully established." >> vpn.log
+		echo $(date) >> vpn.log
+	fi	
+	sleep 5s
+	for (( i=0; i<${len}; i++ ));
+	do
+		while [ "true" ]
+		do
+			ap=1
+			ar=1
+			nmcli con status id R313
+			if [[ $? != 0 ]] ; then
+				ap=0
+			fi
+			nmcli con status id APMehregan12
+			if [[ $? != 0 ]] ; then
+				ar=0
+			fi
+			echo $ap
+			echo $ar
+			if [[ $ap -eq 0 ]] && [[ $ar -eq 0 ]] ; then
+				echo "NetworkManager restarted" >> vpn.log
+				echo "NetworkManager restarted"
+			    killall NetworkManager
+			fi
+			if [[ $is_connect -eq 1 ]] ; then
+				sleep 15s
+			    VPNCON=$(nmcli con status uuid ${arr[$i]} | grep VPN.VPN-STATE | awk '{print $2}')
+				ping google.com -c1
+				if [[ $? != 0 ]] ; then
+				  dis=$(($dis + 1))
+				else
+					dis=0
+				fi
+			    if [[ $dis -gt 7 ]] || [[ $VPNCON != "5" ]] ; then
+			        if [[ $dis -gt 4 ]] ; then
+				        echo "Disconnected $(($i+2)) for loss PING, trying to connecting to $(($i+3))..."
+				 		echo "Disconnected $(($i+2)) for loss PING, trying to connecting to $(($i+3))..." >> vpn.log
+				 		echo $(date) >> vpn.log
+				 		echo $(date)
+				 	else
+				 		echo "Disconnected $(($i+2)) for unknown reason, trying to connecting to $(($i+3))..."
+				 		echo "Disconnected $(($i+2)) for unknown reason, trying to connecting to $(($i+3))..." >> vpn.log
+				 		echo $(date) >> vpn.log
+				 		echo $(date)
+				 	fi
+   					sleep 10s && nmcli con up uuid ${arr[$(($i+1))]}  > sample.s 2> sample.err
+			        if [[ $? == 0 ]] ; then
+			        	dis=0
+				 		echo "VPN connection $(($i+3)) has been successfully established."
+				 		echo "VPN connection $(($i+3)) has been successfully established." >> vpn.log
+				 		echo $(date) >> vpn.log
+				 	else
+				 		is_connect=0
+				 	fi
+				 	sleep 10s
+			        break
+			    fi
+			else
+				sleep 8s
+		 		echo "Trying to connecting to $(($i+3))..."
+    			nmcli con up uuid ${arr[$(($i+1))]}  > sample.s 2> sample.err #If not reached to last connection
+				if [[ $? -eq 0 ]] ; then
+					is_connect=1
+			 		echo "VPN connection $(($i+3)) has been successfully established."
+			 		echo "VPN connection $(($i+3)) has been successfully established." >> vpn.log
+			 		echo $(date) >> vpn.log
+			 	else
+			 		is_connect=0
+			 	fi
+			 	break
+			fi
+		done
+	done
+done
